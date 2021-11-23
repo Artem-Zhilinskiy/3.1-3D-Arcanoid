@@ -38,13 +38,18 @@ namespace Arcanoid
         }
 
         //5. Написать обработчики событий
-        /* В OnMovement ничего не писать, потому что движение обрабатывается в Update
+        // В OnMovement ничего не писать, потому что движение обрабатывается в Update
+        // Если нужна инерция, то надо работать через Rigidbody
         public void OnMovement (CallbackContext context)
         {
             //Дальше перейти в Update.
-
+            //Для инерции надо сделать
+            //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
+            var value = controls.ActionMap.Movement.ReadValue<Vector2>();
+            Vector3 direction = new Vector3(0, value.y, value.x);
+            //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(direction, GameManager._platformAcceleration);
         }
-        */
 
         public void OnLaunch(CallbackContext context)
         {
@@ -60,10 +65,24 @@ namespace Arcanoid
         // Update is called once per frame
         void Update()
         {
+            Movement();
+            /*
             //6. Обработка движения
             var value = controls.ActionMap.Movement.ReadValue<Vector2>();
             transform.position += new Vector3(0, value.y, value.x) * Time.deltaTime * GameManager._platformSpeed;
             //transform.position += new Vector3(0, value.y, value.x) * Time.deltaTime * GameObject.Find("GameManager").GetComponent<GameManager>()._platformSpeed;
+            */
+        }
+
+        private void Movement()
+        {
+            //Дальше перейти в Update.
+            //Для инерции надо сделать
+            //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
+            var value = controls.ActionMap.Movement.ReadValue<Vector2>();
+            Vector3 direction = new Vector3(0, value.y, value.x);
+            //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(direction, GameManager._platformAcceleration);
         }
     }
 }

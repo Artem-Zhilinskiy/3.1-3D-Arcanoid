@@ -6,9 +6,10 @@ namespace Arcanoid
 {
     public class GameManager : MonoBehaviour
     {
-        [Tooltip("Скорость движения платформ"), SerializeField]
-        public int _platformSpeed = 5;
-        
+        [Tooltip("Ускорение движения платформ"), SerializeField]
+        public UnityEngine.ForceMode _platformAcceleration = (ForceMode)1;
+
+
         // Start is called before the first frame update
         void Start()
         {
