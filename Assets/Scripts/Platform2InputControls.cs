@@ -5,7 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Arcanoid
 {
-    public class Platform1InputControls : MonoBehaviour
+    public class Platform2InputControls : MonoBehaviour
     {
         //Импорт настроек из GameManager
         //Объявление переменной, чтобы можно было получить доступ в других методах. Надо в инспекторе Unity добавить.
@@ -46,7 +46,7 @@ namespace Arcanoid
             //Дальше перейти в Update.
             //Для инерции надо сделать
             //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
-            var value = controls.ActionMap.Movement1Platform.ReadValue<Vector2>();
+            var value = controls.ActionMap.Movement2Platform.ReadValue<Vector2>();
             Vector3 direction = new Vector3(0, value.y, value.x);
             //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
             GetComponent<Rigidbody>().AddForce(direction, GameManager._platformAcceleration);
@@ -81,8 +81,9 @@ namespace Arcanoid
             //Дальше перейти в Update.
             //Для инерции надо сделать
             //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
-            var value = controls.ActionMap.Movement1Platform.ReadValue<Vector2>();
-            Vector3 direction = new Vector3(0, value.y, value.x);
+            var value = controls.ActionMap.Movement2Platform.ReadValue<Vector2>();
+            //-z ставить, потому что платформа расположена зеркально к первой.
+            Vector3 direction = new Vector3(0, value.y, -value.x);
             //GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
             GetComponent<Rigidbody>().AddForce(direction, GameManager._platformAcceleration);
         }
