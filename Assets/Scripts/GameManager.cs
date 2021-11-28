@@ -9,7 +9,6 @@ namespace Arcanoid
         [Tooltip("Ускорение движения платформ"), SerializeField]
         public UnityEngine.ForceMode _platformAcceleration = (ForceMode)1;
 
-
         // Start is called before the first frame update
         void Start()
         {
