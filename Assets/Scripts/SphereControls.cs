@@ -61,6 +61,27 @@ namespace Arcanoid
         private void OnCollisionEnter(Collision collision)
         {
             Debug.Log("OnCollision");
+            
+            //Вектор, от которого поворачиваем
+            Vector3 _beforeCollision = this.transform.forward;
+
+            //Определение точки контакта
+            ContactPoint _contact = collision.contacts[0];
+
+            //Вектор, куда поворачиваем
+            Vector3 _afterCollision = Vector3.Reflect(_beforeCollision, _contact.normal);
+
+            //Сам поворот
+            Quaternion _rotation = Quaternion.FromToRotation(_beforeCollision, _afterCollision);
+            Debug.Log("rotation "+_rotation);
+
+            //Присвоение поворота
+            transform.rotation = _rotation;
+
+            //Блок отладки
+            Debug.Log("_beforeCollision " + _beforeCollision);
+            Debug.Log("_afterCollision " + _afterCollision);
+            Debug.Log("_contact.normal " + _contact.normal);
         }
     }
 }
