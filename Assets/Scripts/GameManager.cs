@@ -13,10 +13,15 @@ namespace Arcanoid
         [Header("Массив препятствий"), SerializeField]
         public Transform[] _obstacles;
 
+        //Задать шар
+        [Header("Шар"), SerializeField]
+        public Transform _sphere;
+
         // Start is called before the first frame update
         void Start()
         {
             RotateObstacles();
+            EventHandler();
         }
 
         // Update is called once per frame
@@ -31,6 +36,27 @@ namespace Arcanoid
             {
                 _obstacle.rotation = Random.rotation;
             }
+        }
+  
+        private void DesactivateObstacle (Transform _transform)
+        {
+            foreach (var _obstacle in _obstacles)
+            {
+                if (_transform == _obstacle)
+                {
+                    _transform.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void EventHandler()
+        {
+            _sphere.GetComponent<SphereControls>().DesactivateObstacleEvent += DesactivateObstacle;
+        }
+
+        private void TestEvent()
+        {
+            Debug.Log("Test event");
         }
     }
 }

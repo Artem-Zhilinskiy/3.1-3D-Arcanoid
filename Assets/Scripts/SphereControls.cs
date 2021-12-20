@@ -16,6 +16,12 @@ namespace Arcanoid
         //1. Первое что нужно сделать при создании скрипта управления в NewInputSystem
         public PlatformControls1 controls;
 
+        //Объявить делегат для события
+        public delegate void DesactivateObstacleDelegate(Transform _transform);
+
+        //Объявление события
+        public event DesactivateObstacleDelegate DesactivateObstacleEvent;
+
         //2. Второе, что нужно сделать - инициализировать controls в Awake
         private void Awake()
         {
@@ -74,17 +80,19 @@ namespace Arcanoid
             //Присвоение поворота
             transform.forward = _afterCollision;
 
-            var _1 = _collision.gameObject.transform;
-            var _2 = _collision.transform;
-            if (_1 = _2) Debug.Log("_collision.gameObject.transform = _collision.gameObject.transform");
-            //_collision.gameObject.SetActive(false);
-
             //Блок отладки 
             /*
             Debug.Log("_beforeCollision " + _beforeCollision);
             Debug.Log("_afterCollision " + _afterCollision);
             Debug.Log("_contact.normal " + _contact.normal);
             */
+
+            //Попытка отключить препятствия через делегат
+            //Событие
+            if (DesactivateObstacleEvent != null)
+            {
+                DesactivateObstacleEvent(_collision.transform);
+            }
         }
 
     }
