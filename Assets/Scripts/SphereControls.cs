@@ -11,7 +11,8 @@ namespace Arcanoid
         //Объявление переменной, чтобы можно было получить доступ в других методах. Надо в инспекторе Unity добавить.
         [SerializeField] private GameManager GameManager;
 
-        [Tooltip("Скорость движения шара")] public int _moveSpeed = 1;
+        [Tooltip("Скорость движения шара")] public float _moveSpeed = 1;
+        [Tooltip("Максимальная скорость движения шара")] public float _maxMoveSpeed = 5;
 
         //1. Первое что нужно сделать при создании скрипта управления в NewInputSystem
         public PlatformControls1 controls;
@@ -64,7 +65,7 @@ namespace Arcanoid
             }
         }
 
-        private void OnCollisionEnter(Collision _collision)
+        public void OnCollisionEnter(Collision _collision)
         {
             //Debug.Log("OnCollision");
             
@@ -92,6 +93,20 @@ namespace Arcanoid
             if (DesactivateObstacleEvent != null)
             {
                 DesactivateObstacleEvent(_collision.transform);
+            }
+        }
+
+        //Метод дискретного набора скорости после уничтожения препятствия до определённого уровня.
+        public void IncreaseSpeed()
+        {
+            if (_moveSpeed < _maxMoveSpeed)
+            {
+                _moveSpeed = _moveSpeed + 0.1f;
+                Debug.Log("Препятствие уничтожено. Скорость шара увеличена до " + _moveSpeed);
+            }
+            else
+            {
+                Debug.Log("Препятствие уничтожено. Достигнута максимальная скорость шара.");
             }
         }
 

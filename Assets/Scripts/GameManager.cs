@@ -17,11 +17,21 @@ namespace Arcanoid
         [Header("Шар"), SerializeField]
         public Transform _sphere;
 
+        //Определить ворота
+        [Header("Ворота"), SerializeField]
+        public Transform _gate1;
+        public Transform _gate2;
+
+        //Счётчик жизней
+        [Header("Счётчик жизней"), SerializeField]
+        private int _lifeCounter = 5;
+
         // Start is called before the first frame update
         void Start()
         {
             RotateObstacles();
-            EventHandler();
+            ObstacleEventHandler();
+            LifeEventHandler();
         }
 
         // Update is called once per frame
@@ -37,7 +47,7 @@ namespace Arcanoid
                 _obstacle.rotation = Random.rotation;
             }
         }
-  
+
         private void DesactivateObstacle (Transform _transform)
         {
             foreach (var _obstacle in _obstacles)
@@ -45,18 +55,36 @@ namespace Arcanoid
                 if (_transform == _obstacle)
                 {
                     _transform.gameObject.SetActive(false);
+                    //Увеличение скорость движения шара
+                    _sphere.GetComponent<SphereControls>().IncreaseSpeed();
                 }
             }
         }
 
-        private void EventHandler()
+        private void ObstacleEventHandler()
         {
             _sphere.GetComponent<SphereControls>().DesactivateObstacleEvent += DesactivateObstacle;
         }
 
-        private void TestEvent()
+        //Счёт жизней
+        private void LifeCounter()
         {
-            Debug.Log("Test event");
+            _lifeCounter -= 1;
+            if (_lifeCounter > 0)
+            {
+                Debug.Log("Шар упущен. Осталось жизней: " + _lifeCounter);
+            }
+            else
+            {
+                Debug.Log("Шар упущен. Осталось жизней:" + _lifeCounter + " Игра окончена.");
+                UnityEditor.EditorApplication.isPaused = true;
+            }
+        }
+
+        private void LifeEventHandler()
+        {
+            _gate1.GetComponent<GateControls>().SphereLeftEvent += LifeCounter;
+            _gate2.GetComponent<GateControls>().SphereLeftEvent += LifeCounter;
         }
     }
 }
