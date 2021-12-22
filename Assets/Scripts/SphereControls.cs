@@ -7,6 +7,9 @@ namespace Arcanoid
 {
     public class SphereControls : MonoBehaviour
     {
+        Coroutine _moveSphereCoroutine = null;
+        Quaternion _sphereStartRotation = new Quaternion();
+
         //Импорт настроек из GameManager
         //Объявление переменной, чтобы можно было получить доступ в других методах. Надо в инспекторе Unity добавить.
         [SerializeField] private GameManager GameManager;
@@ -47,13 +50,13 @@ namespace Arcanoid
 
         public void OnLaunch(CallbackContext context)
         {
-            StartCoroutine(MoveForward());
+            _moveSphereCoroutine = StartCoroutine(MoveForward());
         }
 
         // Start is called before the first frame update
         public void Start()
         {
-
+           _sphereStartRotation = transform.rotation;
         }
 
         private IEnumerator MoveForward()
@@ -96,6 +99,16 @@ namespace Arcanoid
             }
         }
 
+        //Возращение шара после пропуска
+        public void SphereReturn()
+        {
+            Vector3 _sphereStartpoint = new Vector3(-5f,1f,1f);
+            transform.position = _sphereStartpoint;
+            transform.rotation = _sphereStartRotation;
+            StopCoroutine(_moveSphereCoroutine);
+            Debug.Log("возврат шара");
+        }
+
         //Метод дискретного набора скорости после уничтожения препятствия до определённого уровня.
         public void IncreaseSpeed()
         {
@@ -109,6 +122,5 @@ namespace Arcanoid
                 Debug.Log("Препятствие уничтожено. Достигнута максимальная скорость шара.");
             }
         }
-
     }
 }

@@ -59,6 +59,7 @@ namespace Arcanoid
                     _sphere.GetComponent<SphereControls>().IncreaseSpeed();
                 }
             }
+            VictoryCheck();
         }
 
         private void ObstacleEventHandler()
@@ -79,12 +80,31 @@ namespace Arcanoid
                 Debug.Log("Шар упущен. Осталось жизней:" + _lifeCounter + " Игра окончена.");
                 UnityEditor.EditorApplication.isPaused = true;
             }
+            //Возврат и остановка шара
+            _sphere.GetComponent<SphereControls>().SphereReturn();
         }
 
         private void LifeEventHandler()
         {
             _gate1.GetComponent<GateControls>().SphereLeftEvent += LifeCounter;
             _gate2.GetComponent<GateControls>().SphereLeftEvent += LifeCounter;
+        }
+
+        private void VictoryCheck()
+        {
+            bool _keepPlaying = false;
+            foreach (var _obstacle in _obstacles)
+            {
+                if (_obstacle.gameObject.activeSelf == true)
+                {
+                    _keepPlaying = true;
+                }
+            }
+            if (_keepPlaying == false)
+            {
+                Debug.Log("Вы победили!");
+                UnityEditor.EditorApplication.isPaused = true;
+            }
         }
     }
 }
