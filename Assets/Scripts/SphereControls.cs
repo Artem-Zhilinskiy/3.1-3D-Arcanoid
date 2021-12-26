@@ -10,6 +10,12 @@ namespace Arcanoid
         Coroutine _moveSphereCoroutine = null;
         Quaternion _sphereStartRotation = new Quaternion();
 
+        //Стартовые точки шара
+        static Vector3 _sphereStartLocationLevel1 = new Vector3(6, 1, 1);
+        public static Vector3 _sphereStartLocationLevel2 = new Vector3(3.5f, 1, 20);
+        public static Vector3 _sphereStartLocationLevel3 = new Vector3(10, 1, 41);
+        public static Vector3 _sphereStartLocation = _sphereStartLocationLevel1;
+
         //Импорт настроек из GameManager
         //Объявление переменной, чтобы можно было получить доступ в других методах. Надо в инспекторе Unity добавить.
         [SerializeField] private GameManager GameManager;
@@ -102,8 +108,7 @@ namespace Arcanoid
         //Возращение шара после пропуска
         public void SphereReturn()
         {
-            Vector3 _sphereStartpoint = new Vector3(-5f,1f,1f);
-            transform.position = _sphereStartpoint;
+            transform.position = _sphereStartLocation;
             transform.rotation = _sphereStartRotation;
             StopCoroutine(_moveSphereCoroutine);
             Debug.Log("возврат шара");
